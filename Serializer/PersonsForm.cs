@@ -10,11 +10,21 @@ using System.Windows.Forms;
 
 namespace Serializer
 {
-    public partial class Form1 : Form
+    public partial class PersonForm : Form
     {
-        public Form1()
+        public PersonForm()
         {
             InitializeComponent();
+        }
+
+        private void PersonForm_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void saveBtn_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
