@@ -14,28 +14,27 @@ namespace Person
     {
         public string Name { get; set; }
         public string Address { get; set; }
-        public int PhoneNumber { get; set; }
+        public string PhoneNumber { get; set; }
         public DateTime DateOfRecording { get; set; }
-        [NonSerialized] private static int serialNumber = 0;
+        //public int privateNumb { get; set; }
+        [NonSerialized] public static int serialNumber = 0;
 
         public Person() { }
 
-        public Person(string name, string address, int phoneNumber)
+        public Person(string name, string address, string phoneNumber)
         {
             Name = name;
             Address = address;
             PhoneNumber = phoneNumber;
             DateOfRecording = DateTime.Now;
-            serialNumber = getSerialNumber();
         }
 
         public Person(SerializationInfo info, StreamingContext context)
         {
             Name = (string)info.GetValue("Name", typeof(string));
             Address = (string)info.GetValue("Address", typeof(string));
-            PhoneNumber = (int)info.GetValue("PhoneNumber", typeof(int));
+            PhoneNumber = (string)info.GetValue("PhoneNumber", typeof(string));
             DateOfRecording = (DateTime)info.GetValue("DateOfRecording", typeof(DateTime));
-            serialNumber = getSerialNumber();
         }
 
         void IDeserializationCallback.OnDeserialization(Object sender)
@@ -43,24 +42,27 @@ namespace Person
             serialNumber = getSerialNumber();
         }
 
-        private int getSerialNumber()
+        public static int getSerialNumber()
         {
-            serialNumber++;
-            return serialNumber;
+            int fileCount = 0;
+            foreach (var file in Directory.GetFiles(@"C:\Users\Dodo\Source\Repos\c-sharp-tw3-serializer-szdodo\Serializer\bin\Debug", "*.dat"))
+            {
+                fileCount++;
+            }
+            return fileCount-1;
         }
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            // Use the AddValue method to specify serialized values.
             info.AddValue("Name", Name, typeof(string));
             info.AddValue("Address", Address, typeof(string));
-            info.AddValue("PhoneNumber", PhoneNumber, typeof(int));
+            info.AddValue("PhoneNumber", PhoneNumber, typeof(string));
             info.AddValue("DateOfRecording", DateOfRecording, typeof(DateTime));
         }
 
         public void Serialize()
         {
-            string fileName = "person" + getSerialNumber() + ".dat";
+            string fileName = "person" + (getSerialNumber()+1) + ".dat";
             FileStream fs = new FileStream(fileName, FileMode.Create);
 
             BinaryFormatter formatter = new BinaryFormatter();
@@ -84,22 +86,22 @@ namespace Person
         {
             Person person = new Person();
 
-            FileStream fs = new FileStream(fileName, FileMode.Open);
             try
             {
+                FileStream fs = new FileStream(fileName, FileMode.Open);
+
                 BinaryFormatter formatter = new BinaryFormatter();
                 person = (Person)formatter.Deserialize(fs);
+                fs.Close();
             }
+            catch (FileNotFoundException) { }
             catch (SerializationException e)
             {
                 Console.WriteLine("Failed to deserialize. Reason: " + e.Message);
                 Console.Read();
                 throw;
             }
-            finally
-            {
-                fs.Close();
-            }
+            
             return person;
         }
 

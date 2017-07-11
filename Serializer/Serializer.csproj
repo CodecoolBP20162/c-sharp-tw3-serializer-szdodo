@@ -80,7 +80,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Person\Person.csproj">
-      <Project>{6a536c31-5779-4e32-8aeb-5904e396e8dc}</Project>
+      <Project>{f111678b-16e2-4e4a-a770-7667d9bf28d2}</Project>
       <Name>Person</Name>
     </ProjectReference>
   </ItemGroup>
