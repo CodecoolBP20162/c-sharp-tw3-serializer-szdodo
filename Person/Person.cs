@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Runtime.Serialization;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Collections;
 
 namespace Person
 {
@@ -16,8 +17,8 @@ namespace Person
         public string Address { get; set; }
         public string PhoneNumber { get; set; }
         public DateTime DateOfRecording { get; set; }
-        //public int privateNumb { get; set; }
-        [NonSerialized] public static int serialNumber = 0;
+        //list a számokkkal, nem static + hiba kezelés h ha nincs file
+        [NonSerialized] public static ArrayList serialNumbers = new ArrayList();
 
         public Person() { }
 
@@ -39,17 +40,15 @@ namespace Person
 
         void IDeserializationCallback.OnDeserialization(Object sender)
         {
-            serialNumber = getSerialNumber();
+            //getSerialNumbers();
         }
 
-        public static int getSerialNumber()
+        public static void getSerialNumbers()
         {
-            int fileCount = 0;
             foreach (var file in Directory.GetFiles(@"C:\Users\Dodo\Source\Repos\c-sharp-tw3-serializer-szdodo\Serializer\bin\Debug", "*.dat"))
             {
-                fileCount++;
+                serialNumbers.Add(file.ToString());
             }
-            return fileCount-1;
         }
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)
@@ -62,7 +61,8 @@ namespace Person
 
         public void Serialize()
         {
-            string fileName = "person" + (getSerialNumber()+1) + ".dat";
+            string fileName = "person" + serialNumbers.Count + ".dat";
+            serialNumbers.Add(fileName);
             FileStream fs = new FileStream(fileName, FileMode.Create);
 
             BinaryFormatter formatter = new BinaryFormatter();

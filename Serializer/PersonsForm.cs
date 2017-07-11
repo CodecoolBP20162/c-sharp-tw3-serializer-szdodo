@@ -19,7 +19,8 @@ namespace Serializer
 
         private void PersonForm_Load(object sender, EventArgs e)
         {
-            serialNumbLbl.Text = Person.Person.getSerialNumber().ToString();
+            Person.Person.getSerialNumbers();
+            serialNumbLbl.Text = (Person.Person.serialNumbers.Count-1).ToString();
             DORLbl.Text = DateTime.Now.ToString();
         }
 
@@ -45,7 +46,7 @@ namespace Serializer
 
         private void lastBtn_Click(object sender, EventArgs e)
         {
-            fillTexts(Person.Person.getSerialNumber());
+            fillTexts(Person.Person.serialNumbers.Count-1);
         }
 
         private void prevBtn_Click(object sender, EventArgs e)
@@ -61,7 +62,7 @@ namespace Serializer
 
         private void fillTexts(int serNumber)
         {
-            string fileName = "person" + serNumber + ".dat";
+            string fileName = Person.Person.serialNumbers[serNumber].ToString();
             Person.Person per = Person.Person.Deserialize(fileName);
             nameTxt.Text = per.Name;
             addressTxt.Text = per.Address;
@@ -73,7 +74,7 @@ namespace Serializer
         private void nextBtn_Click(object sender, EventArgs e)
         {
             int serNumb = Convert.ToInt32(serialNumbLbl.Text);
-            if (serNumb == Person.Person.getSerialNumber())
+            if (serNumb == (Person.Person.serialNumbers.Count-1))
             {
                 MessageBox.Show("No more beach");
                 return;
