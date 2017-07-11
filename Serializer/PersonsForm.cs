@@ -19,8 +19,8 @@ namespace Serializer
 
         private void PersonForm_Load(object sender, EventArgs e)
         {
-            Person.Person.getSerialNumbers();
-            serialNumbLbl.Text = (Person.Person.serialNumbers.Count-1).ToString();
+            Person.Person.getFileNames();
+            serialNumbLbl.Text = (Person.Person.fileNames.Count-1).ToString();
             DORLbl.Text = DateTime.Now.ToString();
         }
 
@@ -31,25 +31,27 @@ namespace Serializer
             phoneTxt.Clear();
         }
 
-        private void saveBtn_Click(object sender, EventArgs e)
+        private void SaveBtn_Click(object sender, EventArgs e)
         {
-            if (!checkIfEmpty()) return;
+            if (!CheckIfEmpty()) return;
             Person.Person per=new Person.Person(nameTxt.Text, addressTxt.Text, phoneTxt.Text);
-            per.Serialize();
+            int num = GetFirstEmptySpace();
+            serialNumbLbl.Text = num.ToString();
+            per.Serialize(num);
             ClearTexts();
         }
 
-        private void firstBtn_Click(object sender, EventArgs e)
+        private void FirstBtn_Click(object sender, EventArgs e)
         {
-            fillTexts(1);
+            FillTexts(1);
         }
 
-        private void lastBtn_Click(object sender, EventArgs e)
+        private void LastBtn_Click(object sender, EventArgs e)
         {
-            fillTexts(Person.Person.serialNumbers.Count-1);
+            FillTexts(Person.Person.fileNames.Count-1);
         }
 
-        private void prevBtn_Click(object sender, EventArgs e)
+        private void PrevBtn_Click(object sender, EventArgs e)
         {
             int serNumb = Convert.ToInt32(serialNumbLbl.Text);
             if (serNumb == 1)
@@ -57,12 +59,12 @@ namespace Serializer
                 MessageBox.Show("No going back beach");
                 return;
             }
-            fillTexts(serNumb - 1);
+            FillTexts(serNumb - 1);
         }
 
-        private void fillTexts(int serNumber)
+        private void FillTexts(int serNumber)
         {
-            string fileName = Person.Person.serialNumbers[serNumber].ToString();
+            string fileName = Person.Person.fileNames[serNumber].ToString();
             Person.Person per = Person.Person.Deserialize(fileName);
             nameTxt.Text = per.Name;
             addressTxt.Text = per.Address;
@@ -71,18 +73,18 @@ namespace Serializer
             DORLbl.Text = per.DateOfRecording.ToString();
         }
 
-        private void nextBtn_Click(object sender, EventArgs e)
+        private void NextBtn_Click(object sender, EventArgs e)
         {
             int serNumb = Convert.ToInt32(serialNumbLbl.Text);
-            if (serNumb == (Person.Person.serialNumbers.Count-1))
+            if (serNumb == (Person.Person.fileNames.Count-1))
             {
                 MessageBox.Show("No more beach");
                 return;
             }
-            fillTexts(serNumb + 1);
+            FillTexts(serNumb + 1);
         }
 
-        private Boolean checkIfEmpty()
+        private Boolean CheckIfEmpty()
         {
             if (nameTxt.TextLength==0 || addressTxt.TextLength==0 || phoneTxt.TextLength == 0)
             {
@@ -90,6 +92,27 @@ namespace Serializer
                 return false;
             }
             return true;
+        }
+
+        private  int GetFirstEmptySpace()
+        {
+            int index = 1;
+            Person.Person.fileNames.Sort();
+            foreach (string name in Person.Person.fileNames)
+            {
+                string numberParts = name.Substring(name.Length - 6, 2);
+                int number=0;
+                if (!Int32.TryParse(numberParts, out number))
+                {
+                    number = Convert.ToInt32(numberParts.Substring(1));
+                }
+                if (index != number)
+                {
+                    return index;
+                }
+                index++;
+            }
+            return index;
         }
 
         

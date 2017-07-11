@@ -105,7 +105,7 @@
             this.prevBtn.TabIndex = 6;
             this.prevBtn.Text = "Previous";
             this.prevBtn.UseVisualStyleBackColor = true;
-            this.prevBtn.Click += new System.EventHandler(this.prevBtn_Click);
+            this.prevBtn.Click += new System.EventHandler(this.PrevBtn_Click);
             // 
             // nextBtn
             // 
@@ -116,7 +116,7 @@
             this.nextBtn.TabIndex = 7;
             this.nextBtn.Text = "Next";
             this.nextBtn.UseVisualStyleBackColor = true;
-            this.nextBtn.Click += new System.EventHandler(this.nextBtn_Click);
+            this.nextBtn.Click += new System.EventHandler(this.NextBtn_Click);
             // 
             // firstBtn
             // 
@@ -127,7 +127,7 @@
             this.firstBtn.TabIndex = 8;
             this.firstBtn.Text = "First";
             this.firstBtn.UseVisualStyleBackColor = true;
-            this.firstBtn.Click += new System.EventHandler(this.firstBtn_Click);
+            this.firstBtn.Click += new System.EventHandler(this.FirstBtn_Click);
             // 
             // lastBtn
             // 
@@ -138,7 +138,7 @@
             this.lastBtn.TabIndex = 9;
             this.lastBtn.Text = "Last";
             this.lastBtn.UseVisualStyleBackColor = true;
-            this.lastBtn.Click += new System.EventHandler(this.lastBtn_Click);
+            this.lastBtn.Click += new System.EventHandler(this.LastBtn_Click);
             // 
             // saveBtn
             // 
@@ -149,7 +149,7 @@
             this.saveBtn.TabIndex = 10;
             this.saveBtn.Text = "Save";
             this.saveBtn.UseVisualStyleBackColor = true;
-            this.saveBtn.Click += new System.EventHandler(this.saveBtn_Click);
+            this.saveBtn.Click += new System.EventHandler(this.SaveBtn_Click);
             // 
             // serialNumbLbl
             // 

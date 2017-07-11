@@ -18,8 +18,9 @@ namespace Person
         public string PhoneNumber { get; set; }
         public DateTime DateOfRecording { get; set; }
         //list a számokkkal, nem static + hiba kezelés h ha nincs file
-        [NonSerialized] public static ArrayList serialNumbers = new ArrayList();
+        [NonSerialized] public static ArrayList fileNames = new ArrayList();
 
+        //csak 99!
         public Person() { }
 
         public Person(string name, string address, string phoneNumber)
@@ -43,11 +44,11 @@ namespace Person
             //getSerialNumbers();
         }
 
-        public static void getSerialNumbers()
+        public static void getFileNames()
         {
             foreach (var file in Directory.GetFiles(@"C:\Users\Dodo\Source\Repos\c-sharp-tw3-serializer-szdodo\Serializer\bin\Debug", "*.dat"))
             {
-                serialNumbers.Add(file.ToString());
+                if (!file.ToString().Contains("log")) fileNames.Add(file.ToString());
             }
         }
 
@@ -59,10 +60,11 @@ namespace Person
             info.AddValue("DateOfRecording", DateOfRecording, typeof(DateTime));
         }
 
-        public void Serialize()
+        public void Serialize(int emptySerNumb)
         {
-            string fileName = "person" + serialNumbers.Count + ".dat";
-            serialNumbers.Add(fileName);
+
+            string fileName = "person" + emptySerNumb + ".dat";
+            fileNames.Add(fileName);
             FileStream fs = new FileStream(fileName, FileMode.Create);
 
             BinaryFormatter formatter = new BinaryFormatter();
