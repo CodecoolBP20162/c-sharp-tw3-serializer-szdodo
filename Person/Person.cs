@@ -17,10 +17,8 @@ namespace Person
         public string Address { get; set; }
         public string PhoneNumber { get; set; }
         public DateTime DateOfRecording { get; set; }
-        //list a számokkkal, nem static + hiba kezelés h ha nincs file
         [NonSerialized] public static ArrayList fileNames = new ArrayList();
 
-        //csak 99!
         public Person() { }
 
         public Person(string name, string address, string phoneNumber)

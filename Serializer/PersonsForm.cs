@@ -34,6 +34,11 @@ namespace Serializer
         private void SaveBtn_Click(object sender, EventArgs e)
         {
             if (!CheckIfEmpty()) return;
+            if (Person.Person.fileNames.Count == 99)
+            {
+                MessageBox.Show("There is no empty space");
+                return;
+            }
             Person.Person per=new Person.Person(nameTxt.Text, addressTxt.Text, phoneTxt.Text);
             int num = GetFirstEmptySpace();
             serialNumbLbl.Text = num.ToString();
